@@ -7,13 +7,17 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     python3 \
     python3-pip \
+    libffi-dev \
+    libopus-dev \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Устанавливаем библиотеку для Discord
-RUN pip3 install discord.py
+# Ставим py-cord с поддержкой голоса
+RUN pip3 install py-cord[voice]
 
 RUN curl -sSL https://github.com/ekzhang/bore/releases/download/v0.5.2/bore-v0.5.2-x86_64-unknown-linux-musl.tar.gz | tar -C /usr/local/bin -xz
 
+COPY web_server.py /web_server.py
 COPY bridge.py /bridge.py
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
